@@ -3,20 +3,20 @@
         <div class="row " >
           {{#each products}}
 
-          <div class="col-md-3 col-6" style="text-align: center;display: flex; justify-content: center;align-items: center;">
+          <div class="col-md-3 col-6" style="text-align: center;display: flex; justify-content: center;align-items: center;" >
            
             <div class="card" style="width: 15rem; height: 26rem;">
               <img
                 src="/product-images/{{this._id}}.jpg"
                 class="card-img-top"
                 style="height: 15rem;"
-                alt="..."
+                alt="rukho sara sabar karo"
               />
               <div class="card-body">
                 <h5 class="card-title">{{this.Name}}</h5>
                 <p class="card-text">{{this.Price}}</p>
                 <p class="card-text">{{this.Description}}</p>
-                <a href="/add-to-cart/{{this._id}}" class="btn btn-primary">Add to Cart</a>
+                <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">Add to cart </button>
               </div>
             </div>
            </div>  
@@ -24,3 +24,5 @@
            </div>
       </div>
     </section> 
+
+   
