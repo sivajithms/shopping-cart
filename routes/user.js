@@ -73,12 +73,15 @@ router.get('/cart',verifyLogin,async(req,res)=>{
 })
 
 router.get('/add-to-cart/:id',(req,res)=>{
-  console.log('api call ')
   userhelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
   res.json({status:true})
   })
 })
+router.post('/change-product-quantity',(req,res,next)=>{
+  userhelpers.changeProductQuantity(req.body).then(()=>{
 
+  })
+})
 
 
 module.exports = router;

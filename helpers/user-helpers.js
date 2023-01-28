@@ -99,23 +99,13 @@ module.exports={
                         foreignField:'_id',
                         as:'product'
                     }
+                },
+                {
+                    $project:{
+                        item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
+                    }
                 }
-                // {
-                //     $lookup:{
-                //         from:collection.PRODUCT_COLLECTIONS,
-                //         let:{prodList:'$products'},
-                //         pipeline:[
-                //             {
-                //                 $match:{
-                //                     $expr:{
-                //                         $in:['$_id',"$$prodList"]
-                //                     }
-                //                 }
-                //             }
-                //         ],
-                //         as:'cartItems'
-                //     }
-                // }
+                
             ]).toArray()
              resolve(cartItems)
         })
@@ -129,7 +119,21 @@ module.exports={
             }
             resolve(count)
         })
+    },
+    changeProductQuantity:(details)=>{
+        count=parseInt(details.count)
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.CART_COLLECTION)
+                    .updateOne({_id:objectId(details.cart),'products.item':objectId(details.product)},
+                    {
+                        $inc:{'products.$.quantity':count}
+                    }).then(()=>{
+                        resolve() 
+                    })
+        })
+        
     }
-
+    
+    
 
 }
