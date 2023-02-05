@@ -1,7 +1,8 @@
 const { response } = require('express');
 var express = require('express');
 var router = express.Router();
-var productHelper=require('../helpers/product-helpers')
+var productHelper=require('../helpers/product-helpers');
+const userHelpers = require('../helpers/user-helpers');
 const userhelpers=require('../helpers/user-helpers')
 
 
@@ -68,8 +69,8 @@ router.get('/logout',(req,res)=>{
 
 router.get('/cart',verifyLogin,async(req,res)=>{
   let products=await userhelpers.getCartProducts(req.session.user._id)
-  console.log(products);
-  res.render('user/cart',{products,user:req.session.user})
+  let totalValue=await userhelpers.getTotalAmount(req.session.user._id)
+  res.render('user/cart',{products,user:req.session.user,totalValue})
 })
 
 router.get('/add-to-cart/:id',(req,res)=>{
@@ -78,7 +79,8 @@ router.get('/add-to-cart/:id',(req,res)=>{
   })
 })
 router.post('/change-product-quantity',(req,res,next)=>{
-  userhelpers.changeProductQuantity(req.body).then((response)=>{
+  userhelpers.changeProductQuantity(req.body).then(async(response)=>{
+    response.total=await userhelpers.getTotalAmount(req.body.userId)
     res.json(response)
 
   })
@@ -90,7 +92,14 @@ router.post('/remove-product',(req,res,next)=>{
 })
 router.get('/place-order',verifyLogin, async(req,res)=>{
   let total=await userhelpers.getTotalAmount(req.session.user._id)
-  res.render('user/place-order',{total})
+  res.render('user/place-order',{total,user:req.session.user})
 })
-
+router.post('/place-order',async(req,res)=>{
+  let products=await userHelpers.getCartProductList(req.body.userId)
+  let totalPrice=await userHelpers.getTotalAmount(req.body.userId)
+  userHelpers.placeOrder(req.body,products,totalPrice).then((response)=>{
+    res.json({status:true})
+  })
+  console.log(req.body)
+})
 module.exports = router;
