@@ -1,0 +1,32 @@
+<section >
+    
+        <table class="table mt-5" style="">
+  <thead>
+    <tr>
+      <th scope="col">date</th>
+      <th scope="col">address</th>
+      <th scope="col">pincode</th>
+      <th scope="col">mobile</th>
+      <th scope="col">Amount</th>
+      <th scope="col">payment method</th>
+      <th scope="col">status</th>    
+      <th scope="col">view order</th>  
+    </tr>
+  </thead>
+  <tbody>
+    {{#each orders}}
+    <tr>
+      <th scope="row">1</th>
+      <td>{{this.deliveryDetails.address}}</td>
+      <td>{{this.deliveryDetails.pincode}}</td>
+      <td>{{this.deliveryDetails.mobile}}</td>
+      <td>{{this.totalAmount}}</td>
+      <td>{{this.paymentMethod}}</td>
+      <td>{{this.status}}</td>
+      <td><a href="/view-order-products/{{this._id}}" class="btn btn-primary" >view products</a></td>
+    </tr>  
+    {{/each}}
+  </tbody>
+</table>
+    </div>
+</section>
